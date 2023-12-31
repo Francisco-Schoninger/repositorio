@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;600&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Inconsolata;
+    font-weight: 600;
+}
+
+
+.main-grid {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-areas:
+        "user-info events enemy-info"
+        "user-info game enemy-info"
+        "user-info actions enemy-info";
+    grid-template-rows: 20% 55% 25%;
+    grid-template-columns: 20% 60% 20%;
+}
+
+.next-button{
+    height: 8rem;
+    width: 8rem;
+    background-color:#ffffff;
+}
+
+.attack-button{
+    height: 8rem;
+    width: 8rem;
+    background-color:#ffffff;
+    
+}
+
+#event-container{
+    border-bottom: 2px solid black;
+    overflow: auto;
+    grid-area:events;
+    background-color:#ffffff;
+    text-align: center;
+    font-size: 1.3rem;
+    align-content: center;
+    justify-content: center;
+}
+
+#event-container p{
+    display: inline;
+    bottom: 0;
+    
+}
+
+#enemy-info-container{
+    border-left: 2px solid black;
+    grid-area:enemy-info;
+    background-color:#faa4a4;
+}
+
+#user-info-container{
+    border-right: 2px solid black;
+    grid-area:user-info;
+    background-color:#e1d4ff;
+}
+
+#game-container{
+    grid-area:game;
+    background-color:#ffffff;
+}
+
+#game-container #game-container__battle-image-container img{
+    height: 40vh;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.button-start-combat{
+    width: max-content;
+    padding: 1rem;
+    height: max-content;
+    border: 2px solid black;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.button-start-tutorial{
+    width: max-content;
+    padding: 1rem;
+    height: max-content;
+    border: 2px solid black;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#actions-container{
+    grid-area:actions;
+    background-color:#d8d8d8;
+    border-top: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-container{
+    font-size: 1.5rem;
+    padding: 5rem 0 5rem 0;
+}
+
+.invisible{
+    display: none;
+}
+
+.game-container__shop-container{
+    width: 100%;
+    height: 100%;
+}
+
+.shop{
+    width: 100%;
+    height: 100%;
+    background-color: #6b4e3d;
+    overflow-y: auto;
+}
+
+.shop__item{
+    width: 49%;
+    height: 35%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shop__item-info{
+    width: 90%;
+    height: 82%;
+    background-color:#e6e6e6;
+    display: grid;
+    grid-template-areas:
+    "si-icon si-name"
+    "si-icon si-price";
+    grid-template-columns: 27% 73%;
+    grid-template-rows: 75% 25%;
+    border: 2px solid black;
+    
+}
+.shop__item__icon{
+    width: 4.8rem;
+    height: 4.8rem;
+    grid-area: si-icon; 
+    justify-self: center;
+    align-self: center;
+}
+
+.shop__item__name{
+    font-size: 1.3rem;
+    grid-area: si-name;
+    align-self: center;
+    margin-right: 1.2rem;
+}
+
+.shop__item__price{
+    text-align: end;
+    margin: 0 1.2rem 1rem 0;
+    grid-area: si-price;
+}
+
+.item-detailed-info-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shop__item__detailed-info{
+    height: max-content;
+    width: 100%;
+    justify-self: center;
+    background-color:#d88b8b;
+}
+
+.shop__item__detailed-info__icon{
+    width: 10rem;
+    height: 10rem;
+}

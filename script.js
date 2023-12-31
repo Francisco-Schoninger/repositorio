@@ -1,0 +1,98 @@
+
+enemy = defeatedMob;
+combat = false;
+combatOff()
+
+logEvent(`¡Bienvenido, jugador! Estás en el cuerpo de Ashley, un aprendiz de guerrero del reino de Viellum.`)
+setTimeout(function(){
+    clearInterval(interval);
+    logEvent(`Haz click en el botón para empezar el tutorial.`);
+    buttonStartTutorial.classList.remove('invisible');
+}, 2000);
+
+console.log(`Nombre: ${user1.nickname}\nOro: ${user1.gold}\nVida Máxima: ${user1.maxHealth}\nResistencia: ${user1.resistance}\nDaño: ${user1.damage}`);
+
+function loadTutorial(){
+    logEvent(`Estás en el centro de entrenamiento de guerreros. Es la última hora, pero no te sientes cansado.`);
+    setTimeout(function(){
+        enemy = dummy;
+        logEvent(`Maestro Thomas: Bien, muchachos y muchachas, vamos a hacer una última simulación de combate con un objetivo de práctica y después podrán largarse.`);
+        setTimeout(function(){
+            enableCombatButton(`EL OBJETIVO DE PRÁCTICA NO TE HARÁ DAÑO<br>LA RESISTENCIA ES LA CANTIDAD DE PUNTOS DE DAÑO QUE REDUCIRÁS CUANDO TE ATAQUEN<br>HAZ CLICK EN ESTE BOTÓN PARA INICIAR EL COMBATE`,"tutorial");
+        },762);
+    }, 4500);
+}
+
+function loadTutorialPart2(){
+    enemy = defeatedMob;
+    logEvent(`Maestro Thomas: Vaya... Tendré que reparar eso, ${user.nickname}.`);
+    setTimeout(function(){
+        logEvent(`Notas que tus guantes se rompieron. Te los quitas y los tiras a la basura.`);
+        setTimeout(function(){
+            let html = `<div class="next-button-container"><button class="next-button">IR A COMPRAR GUANTES NUEVOS</button></div>`;
+            actionsContainer.innerHTML = actionsContainer.innerHTML + html;
+            let nextSceneButton = document.querySelector(".next-button");
+            nextSceneButton.addEventListener('click',function(){
+                loadTutorialPart3();
+                nextSceneButton.classList.add("invisible");
+            })
+        },1000)
+    },1000);
+}
+
+function loadTutorialPart3(){
+    setTimeout(function() {
+        clearInterval(interval);
+        logEvent(`Terminas el día de entrenamiento con tus compañeros.`)
+        setTimeout(function() {
+            clearInterval(interval);
+            logEvent(`Estás saliendo del centro de entrenamiento de guerreros, te vas por una calle poco transitada rumbo a la armería local de Kethis, la ciudad en la que estás.`);
+            setTimeout(function() {
+                clearInterval(interval);
+                enemy = mob1;
+                logEvent(`Te sorprende ${mob1.nickname}, un hombre delgado vestido de ropa desgastada, unas hombreras de hierro oxidadas y un pañuelo naranja que le tapa la boca. Tiene una daga relativamente bien cuidada en su mano derecha.`);
+                setTimeout(function() {
+                    clearInterval(interval);
+                    logEvent(`Bandido Springs: Hey, tú! Dame lo que tengas, debilucho. Un simple novato del arte de las peleas no podrá contra mí, el grandioso Springs`);
+                    setTimeout(function() {
+                    clearInterval(interval);
+                    enableCombatButton('¡¿DEBILUCHO?!', "tutorial3");
+                    }, 893);
+                }, 5000);
+            }, 4000);
+        }, 3000);
+    }, 2000);
+}
+
+function loadTutorialPart4(){
+    setTimeout(function(){
+        logEvent(`*Llega corriendo el Guardia Grewis, un hombre de estatura baja, cuerpo obeso y una papada que le recorre de oreja a oreja. Lleva puesta una armadura propia de los guardias de Kethis*`)
+        setTimeout(function(){
+            logEvent(`Guardia Grewis: Maldita sea, se me escapó ese estúpido de Bandido Springs... Ya es la tercera vez que lo hace`);
+            setTimeout(function(){
+                logEvent(`Guardia Grewis: Bien hecho, honorable ciudadano. Te defendiste heróicamente de ese Bandido`);
+                setTimeout(function(){
+                    logEvent(`Guardia Grewis: Ah, ¿qué quién es? Ese sujeto se llama Benson Springs, pero se hace llamar "Grandioso Springs", "Lord Springs", entre otros apodos ficticios.`);
+                    setTimeout(function(){
+                        logEvent(`Guardia Grewis: Es miembro del clan de los Bandidos de Merlog, un clan criminal que usurpa terrenos de Viellum y otros reinos.`);
+                        setTimeout(function(){
+                            logEvent(`Guardia Grewis: A pesar de hacerse llamar "grandioso" o "lord", no es más que uno de los miembros más abajo en el estatus del clan. Sería el primero en ser abandonado por su propia gente.`);
+                            setTimeout(function(){
+                                logEvent(`Guardia Grewis: En fin, debo retirarme. ¡Adiós!`)
+                                setTimeout(function(){
+                                    let html = `<div class="next-button-container"><button class="next-button">ENTRAR A LA ARMERÍA DE KETHIS</button></div>`;
+                                    actionsContainer.innerHTML = actionsContainer.innerHTML + html;
+                                    let nextSceneButton = document.querySelector(".next-button");
+                                    nextSceneButton.addEventListener('click',function(){
+                                        loadShop(armory);
+                                        nextSceneButton.classList.add("invisible");
+                                    })
+                                }, 600)
+                            }, 8000)
+                        }, 8000)
+                    }, 8000)
+                }, 5000)
+            }, 5000);
+        }, 6000);
+    }, 1500);
+}
