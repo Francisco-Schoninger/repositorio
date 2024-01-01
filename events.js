@@ -63,35 +63,54 @@ buttonStartCombat.addEventListener('click', function() {
 
 let armory = [trainingBoots, trainingHelmet, trainingChestplate, trainingGloves, trainingPants, trainingSword]
 
-function loadShop(insert){
-    const shopContainer = document.querySelector(".game-container__shop-container");
+function loadShop(insert) {
+    const shopContainer = document.createElement("div");
+    shopContainer.className = "game-container__shop-container";
+    gameContainer.appendChild(shopContainer);
     let typeOfShop = insert;
-    if(typeOfShop == armory){
-        shopContainer.innerHTML = `<div class="armory-shop shop"></div>`
+
+    if (typeOfShop == armory) {
+        const armoryShopContainer = document.createElement("div");
+        armoryShopContainer.className = "armory-shop shop";
+        shopContainer.appendChild(armoryShopContainer);
         armory.forEach((Item) => {
-            const armoryShop = document.querySelector(".armory-shop");
-            let itemButtonsArray = [];
-            function createItem(insertItem){
-                itemButtonsArray.push(
-                `<div class="shop__item">
-                    <div class="shop__item-info  item-id-${insertItem.id}">
-                        <img class="shop__item__icon" src="https://placeholder.co/400" alt="">
-                        <p class="shop__item__name">${insertItem.name}</p>
-                        <p class="shop__item__price">$${insertItem.price}</p>
-                    </div>
-                </div>`);
-                armoryShop.innerHTML = armoryShop.innerHTML + itemButtonsArray[itemButtonsArray.length - 1]
-                let itemButton = document.querySelector(`.item-id-${lastButtonArrayItem}`);
-                itemButton.addEventListener('click',function(){
+            function createItem(insertItem) {
+                const armoryShop = document.querySelector(".armory-shop");
+            
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "shop__item";
+            
+                const itemInfoDiv = document.createElement("div");
+                itemInfoDiv.className = `shop__item-info item-id-${insertItem.id}`;
+            
+                itemInfoDiv.innerHTML = `
+                    <img class="shop__item__icon" src="https://placeholder.co/400" alt="">
+                    <p class="shop__item__name">${insertItem.name}</p>
+                    <p class="shop__item__price">$${insertItem.price}</p>
+                `;
+            
+                itemDiv.appendChild(itemInfoDiv);
+                armoryShop.appendChild(itemDiv);
+            
+                const itemButton = armoryShop.querySelector(`.item-id-${insertItem.id}`);
+            
+                itemButton.addEventListener('click', function () {
                     displayItemDetailedInformation(insertItem);
-                })
+                });
             }
+            
+
             createItem(Item);
         });
-    }else{
+    } else {
         console.log("ERROR: none type of shop was requested");
     }
 }
+
+function closeShop(){
+    
+}
+
 
 
 

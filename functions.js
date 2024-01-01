@@ -122,7 +122,7 @@ function displayItemDetailedInformation(value){
     let itemDetailedInfoContainer = document.querySelector(".item-detailed-info-container");
     itemDetailedInfoContainer.innerHTML = ``
     itemDetailedInfoContainer.innerHTML = `
-    <div class="shop__item__detailed-info item-id-1">
+    <div class="shop__item__detailed-info item-id-${value.id}">
         <img class="shop__item__detailed-info__icon" src="https://placeholder.co/400" alt="">
         <p class="shop__item__detailed-info__name">${value.name}</p>
         <p class="shop__item__detailed-info__price">PRECIO: $${value.price}</p>
@@ -131,7 +131,6 @@ function displayItemDetailedInformation(value){
         <p class="shop__item__detailed-info__damage">DAÑO: ${value.damage}</p>
         <p class="shop__item__detailed-info__type">TIPO: ${value.type}</p>
     </div>`;
-    
 }
 
 function hideStats(entity){
