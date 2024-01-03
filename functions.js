@@ -21,16 +21,16 @@ function User(userNickname,userGold,userMaxHealth,userHealth,userResistance,user
 
 let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 
-let user1Stats = new Stats(312, 312, 17, 53)
+let user1Stats = new Stats(200, 200, 0, 20)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
-let mob1Stats = new Stats(320, 320, 4, 62)
+let mob1Stats = new Stats(200, 200, 0, 25)
 let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT");
 
 let defeatedMobStats = new Stats(0,0,0,0);
 let defeatedMob = new User("NO ENEMY", 0, defeatedMobStats.maxHealth,defeatedMobStats.health,defeatedMobStats.resistance, defeatedMobStats.damage,"NONE");
 
-let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, null, null);
+let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, 0, 0);
 let dummy = new User("Objetivo de Práctica", 0, dummyStats.maxHealth,dummyStats.health,dummyStats.resistance,dummyStats.damage, "DUMMY");
 
 
@@ -46,6 +46,93 @@ let actionsContainer = document.querySelector("#actions-container");
 
 let enemyInfoContainer = document.getElementById("enemy-info-container");
 
+function enemyAttack(player, enemy, enemyDamageInput) {
+    let enemyAttackIndicatorBorder = document.createElement("div");
+    enemyAttackIndicatorBorder.className = "enemy-attack-border";
+    gameContainer.appendChild(enemyAttackIndicatorBorder);
+    let enemyAttackIndicatorFill = document.createElement("div");
+    enemyAttackIndicatorFill.className = "enemy-attack-border__fill";
+    enemyAttackIndicatorBorder.appendChild(enemyAttackIndicatorFill);
+    let randomPositionX = Math.floor(Math.random() * 84);
+    let randomPositionY = Math.floor(Math.random() * 32);
+    let indicatorFill = 0;
+
+    enemyAttackIndicatorBorder.style.marginLeft = `${randomPositionX}%`;
+    console.log(randomPositionX);
+    enemyAttackIndicatorBorder.style.marginTop = `${randomPositionY}%`;
+    console.log(randomPositionY);
+
+    function clickHandler() {
+        enemyAttackIndicatorBorder.removeEventListener('click', clickHandler);
+        enemyAttackIndicatorFill.style.backgroundColor = "blue";
+        enemyDamageInput = Math.round(enemyDamageInput);
+        let enemyDamageRealInput = enemyDamageInput / 3;
+        enemyDamageRealInput = Math.round(enemyDamageRealInput);
+        logEvent(`¡Bloqueaste ${Math.round(enemyDamageInput / 3 * 2)} de daño de ${enemy.nickname}! Recibes ${enemyDamageRealInput} de daño.`);
+        turnAttackButton(true);
+        setTimeout(function(){
+            player.health = player.health - enemyDamageRealInput;
+            logEvent(`Vida actual de ${player.nickname}: ${player.health}`);
+        }, 250);
+        clearInterval(fillAnimation);
+
+        setTimeout(function(){
+            enemyAttackIndicatorBorder.remove();
+        }, 200);
+    }
+
+    enemyAttackIndicatorBorder.addEventListener('click', clickHandler);
+
+    let fillAnimation = setInterval(function(){
+        if (indicatorFill < 100) {
+            indicatorFill++;
+            enemyAttackIndicatorFill.style.width = `${indicatorFill}%`;
+        } else if (indicatorFill === 100) {
+            clearInterval(fillAnimation);
+            enemyAttackIndicatorBorder.removeEventListener('click', clickHandler);
+            logEvent(`Recibes ${enemyDamageInput} de daño de parte de ${enemy.nickname}.`);
+
+            enemyAttackIndicatorFill.style.backgroundColor = "black";
+            player.health = player.health - enemyDamageInput;
+            setTimeout(function(){
+                logEvent(`Vida actual de ${player.nickname}: ${player.health}`)
+            }, 250);
+            turnAttackButton(true);
+            setTimeout(function(){
+                enemyAttackIndicatorBorder.remove();
+            }, 250);
+            if(player.health <= 0){
+                player.health = 0;
+                let playerBounty = player.gold * 34 / 100;
+                player.gold = player.gold - playerBounty;
+                logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: 0`);
+                setTimeout(function(){
+                    logEvent(`Has sido derrotado y perdiste ${playerBounty} de Oro (Oro actual: ${player.gold})`);
+                    setTimeout(function(){
+                        logEvent(`${enemy.nickname}: Y ahora... ¡El golpe final...! *Se posiciona glorioso para dar el último golpe y acabar contigo`);
+                        setTimeout(function(){
+                            logEvent(`Ves una figura gritando "¡Alto ahí!" que va corriendo a saltos hacia la ubicación del combate.`);
+                            setTimeout(function(){
+                                logEvent(`${enemy.nickname} se va corriendo a toda marcha. En el arranque, se le cae la bolsa de lana rosa en la que puso tu Oro.`);
+                                combatOff();
+                                player.health = player.maxHealth;
+                                setTimeout(function(){
+                                    player.gold = player.gold + playerBounty;
+                                    player.gold = player.gold + 21.12;
+                                    logEvent(`Recuperas tu Oro, y resulta que la bolsa tenía aún más. Oro actual de ${player.nickname}: ${player.gold}`);
+                                    enemy = defeatedMob;
+                                    combatOff();
+                                },2500)
+                            },4500)
+                        },4500)
+                    },400)
+                }, 200)
+            }else{}
+        }
+    }, 20);
+}
+
+
 function turnAttackButton(value){
     if(value == true){
         let html = `<button class="attack-button"><b>ATACAR</b></button>`
@@ -60,13 +147,14 @@ function turnAttackButton(value){
     }
 };
 
-function getRandomInt(max) {
+function getRandomInt(max){
     return Math.floor(Math.random() * max);
 }
 
-function combatOn(){
+function combatOn(rival){
     turnAttackButton(true);
-    displayStats(enemy);
+    displayStats(rival);
+    turnBattleImageContainer(true,rival.type);
     disableCombatButton();
     combat = true;
     console.log("combat on");
@@ -76,10 +164,13 @@ function combatOn(){
 let scenes = [0]
 
 function combatOff(){
+    turnBattleImageContainer(false,defeatedMob);
     turnAttackButton(false);
     hideStats(enemy);
     disableCombatButton();
+    user.health = user.maxHealth;
     combat = false;
+    enemy = defeatedMob;
     console.log("combat off")
     if(scenes[0] == "tutorial"){
         setTimeout(function(){
@@ -123,7 +214,7 @@ function displayItemDetailedInformation(value){
     itemDetailedInfoContainer.innerHTML = ``
     itemDetailedInfoContainer.innerHTML = `
     <div class="shop__item__detailed-info item-id-${value.id}">
-        <img class="shop__item__detailed-info__icon" src="https://placeholder.co/400" alt="">
+        <img class="shop__item__detailed-info__icon" src="${value.icon}" alt="Si la imagen no aparece correctamente no es un problema de ruta, es porque simplemente no encontré una imagen y no se dibujar.">
         <p class="shop__item__detailed-info__name">${value.name}</p>
         <p class="shop__item__detailed-info__price">PRECIO: $${value.price}</p>
         <p class="shop__item__detailed-info__health">VIDA: ${value.health}</p>
@@ -172,7 +263,6 @@ hideStats(enemy);
 
 
 function attack(dealer, enemyToAttack){
-    
     turnAttackButton(false);
     setTimeout(function() {
         clearInterval(interval);
@@ -228,52 +318,50 @@ function attack(dealer, enemyToAttack){
         }
     }
 
-    if (enemyToAttack != dummy){
-        let enemyAttackProbability = getRandomInt(100);
-        if(enemyAttackProbability >= 20 && enemyToAttack.health > 0){
-            let enemyDamageInput = enemyToAttack.damage - dealer.resistance;
-            enemyDamageInput = enemyDamageInput + getRandomInt(enemyDamageInput/2);
-            console.log("enemydamageinput" + enemyDamageInput);
-            setTimeout(function() {
-                clearInterval(interval);
-                logEvent(`${enemyToAttack.nickname} te ataca!`);
-                setTimeout(function() {
-                    if(dealer.health <= 0){
-                        let dealerBounty = dealer.gold * 34 / 100;
-                        dealer.gold = dealer.gold - dealerBounty;
-                        logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: 0`);
-                        logEvent(`Has sido derrotado y perdiste ${dealerBounty} de Oro (Oro actual: ${dealer.gold})`);
-    
-                        combatOff();
-                        dealer.health = dealer.maxHealth;
-                    }else{
-                        logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: ${dealer.health}`);
-                        turnAttackButton(true)
-                    }
-                }, 750);
-            }, 750);
-            dealer.health = dealer.health - enemyDamageInput;
-        }else if(enemyToAttack.health <= 0){
-            combatOff()
-            enemyToAttack.health = enemyToAttack.maxHealth;
-            dealer.health = dealer.maxHealth;
-        }else{
-            setTimeout(function(){
-                logEvent(`${enemyToAttack.nickname} te ataca! Pero falla el ataque.`);
-                turnAttackButton(true);
-            },750)
-        };
-    }else if(enemyToAttack.health <= 0){
-        enemyToAttack.health = enemyToAttack.maxHealth;
-        dealer.health = dealer.maxHealth;
-    }
-    else{
+    if(enemyToAttack != dummy){
+        let enemyDamageInput = enemyToAttack.damage - dealer.resistance;
+        enemyDamageInput = enemyDamageInput + getRandomInt(enemyDamageInput/2);
+        console.log("enemydamageinput" + enemyDamageInput);
+        enemyAttack(dealer, enemyToAttack, enemyDamageInput);
+    } else{
         if(enemyToAttack.health > 0){
             setTimeout(function(){
                 logEvent(`${enemy.nickname} te observa con sus ojos de tela.`)
-                turnAttackButton(true);
+                    turnAttackButton(true);
             }, 1000)
         };
     };
+
+    // if (enemyToAttack != dummy){
+    //     let enemyAttackProbability = getRandomInt(100);
+    //     if(enemyAttackProbability >= 13 && enemyToAttack.health > 0){
+    //         let enemyDamageInput = enemyToAttack.damage - dealer.resistance;
+    //         enemyDamageInput = enemyDamageInput + getRandomInt(enemyDamageInput/2);
+    //         console.log("enemydamageinput" + enemyDamageInput);
+    //         setTimeout(function() {
+    //             clearInterval(interval);
+    //             logEvent(`${enemyToAttack.nickname} te ataca!`);
+    //             setTimeout(function() {
+    //                     logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: ${dealer.health}`);
+    //                     turnAttackButton(true)
+    //                 }
+    //             }, 750);
+    //         }, 750);
+    //         dealer.health = dealer.health - enemyDamageInput;
+    //     }else if(enemyToAttack.health <= 0){
+    //         combatOff()
+    //         enemyToAttack.health = enemyToAttack.maxHealth;
+    //         dealer.health = dealer.maxHealth;
+    //     }else{
+    //         setTimeout(function(){
+    //             logEvent(`${enemyToAttack.nickname} te ataca! Pero falla el ataque.`);
+    //             turnAttackButton(true);
+    //         },750)
+    //     };
+    // }else if(enemyToAttack.health <= 0){
+    //     enemyToAttack.health = enemyToAttack.maxHealth;
+    //     dealer.health = dealer.maxHealth;
+    // }
+
 };
 

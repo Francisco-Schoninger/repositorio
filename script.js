@@ -50,18 +50,18 @@ function loadTutorialPart3(){
             setTimeout(function() {
                 clearInterval(interval);
                 enemy = mob1;
-                logEvent(`Te sorprende ${mob1.nickname}, un hombre delgado vestido de ropa desgastada, unas hombreras de hierro oxidadas y un pañuelo naranja que le tapa la boca. Tiene una daga relativamente bien cuidada en su mano derecha.`);
+                logEvent(`Te sorprende ${mob1.nickname}, un hombre delgado vestido de ropa desgastada, unas hombreras de hierro oxidadas y un pañuelo naranja que le tapa la boca. Tiene una daga relativamente bien cuidada en su mano derecha.`);turnBattleImageContainer(true, "BANDIT");
                 setTimeout(function() {
                     clearInterval(interval);
                     logEvent(`Bandido Springs: Hey, tú! Dame lo que tengas, debilucho. Un simple novato del arte de las peleas no podrá contra mí, el grandioso Springs`);
                     setTimeout(function() {
                     clearInterval(interval);
-                    enableCombatButton('¡¿DEBILUCHO?!', "tutorial3");
+                    enableCombatButton('BANDIDO SPRINGS TE ATACARÁ Y TE INFLIGIRÁ DAÑO<br>PARA BLOQUEAR UNA PARTE DEL DAÑO, CLICKEA EN LOS CUADRADOS QUE APARECERÁN<br>SI EL CUADRADO SE LLENA, RECIBIRÁS MUCHO DAÑO', "tutorial3");
                     }, 893);
                 }, 5000);
             }, 4000);
         }, 3000);
-    }, 2000);
+    }, 500);
 }
 
 function loadTutorialPart4(){
@@ -94,5 +94,5 @@ function loadTutorialPart4(){
                 }, 5000)
             }, 5000);
         }, 6000);
-    }, 1500);
+    }, 4500);
 }

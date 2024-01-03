@@ -16,7 +16,7 @@
         "user-info events enemy-info"
         "user-info game enemy-info"
         "user-info actions enemy-info";
-    grid-template-rows: 20% 55% 25%;
+    grid-template-rows: 22% 56% 22%;
     grid-template-columns: 20% 60% 20%;
 }
 
@@ -26,11 +26,22 @@
     background-color:#ffffff;
 }
 
-.attack-button{
-    height: 8rem;
-    width: 8rem;
+#actions-container button{
+    height: 7.5rem;
+    width: 7.5rem;
     background-color:#ffffff;
-    
+    transition: 0.19s all;
+    border: 3px solid black;
+    font-size: 1.1rem;
+}
+
+#actions-container button:hover{
+    border: 3px solid red;
+    color: red;
+}
+
+#actions-container button:active{
+    transform: scale(0.92);
 }
 
 #event-container{
@@ -42,12 +53,12 @@
     font-size: 1.3rem;
     align-content: center;
     justify-content: center;
+    padding: 0.1rem;
 }
 
 #event-container p{
     display: inline;
     bottom: 0;
-    
 }
 
 #enemy-info-container{
@@ -67,7 +78,7 @@
     background-color:#ffffff;
 }
 
-#game-container #game-container__battle-image-container img{
+#game-container .game-container__battle-image-container img{
     height: 40vh;
     display: block;
     position: absolute;
@@ -86,6 +97,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 5000;
 }
 
 .button-start-tutorial{
@@ -100,6 +112,21 @@
     transform: translate(-50%, -50%);
 }
 
+
+.enemy-attack-border{
+    height: 5rem;
+    width: 5rem;
+    border: 2px solid black;
+    position: relative;
+    z-index: 2000;
+}
+
+.enemy-attack-border__fill{
+    height: 100%;
+    width: 0%;
+    background-color: red;
+}
+
 #actions-container{
     grid-area:actions;
     background-color:#d8d8d8;
@@ -107,6 +134,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.game-container__battle-image-container{
+    height: 100%;
+    width: 100%;
 }
 
 .info-container{
@@ -184,10 +216,20 @@
     height: max-content;
     width: 100%;
     justify-self: center;
+    justify-content: center;
     background-color:#d88b8b;
+}
+
+.shop__item__detailed-info p:last-child{
+    margin-bottom: 1rem;
 }
 
 .shop__item__detailed-info__icon{
     width: 10rem;
     height: 10rem;
+    display: block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin: 1rem 0 1rem 0;
 }

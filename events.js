@@ -13,7 +13,29 @@ function Event(event){
 
 const gameContainer = document.querySelector("#game-container");
 
-const battleImageContainer = document.querySelector('#game-container__battle-image-container');
+let battleImageContainer = document.createElement('div');
+battleImageContainer.className = "game-container__battle-image-container";
+gameContainer.appendChild(battleImageContainer);
+
+function turnBattleImageContainer(value, type) {
+    if (value === true) {
+        if (type === "BANDIT") {
+            console.log("displaying bandit silhouette");
+            html = `<img class="bandit-bi battle-image" class="invisible" src="./img/bandit.png" alt="A bandit's silhouette">`;
+        } else if (type === "DUMMY") {
+            console.log("displaying dummy silhouette");
+            html = `<img class="dummy-bi battle-image" class="invisible" src="./img/dummy.png" alt="A dummy's silhouette">`;
+        }
+        battleImageContainer.style.display = "inline";
+        battleImageContainer.innerHTML = html;
+    } else {
+        battleImageContainer.style.display = "none";
+    }
+}
+
+// Luego puedes llamar a la función con los valores correspondientes
+// turnBattleImageContainer(false, "BANDIT");
+
 
 function logEvent(event){
     let eventLogged = event;
@@ -26,21 +48,9 @@ function logEvent(event){
     if(enemy == defeatedMob){
         displayStats(user);
         console.log("displaying user stats (events.js)");
-        let html = "";
-        battleImageContainer.innerHTML = html;
     }else{
         displayStats(user);
         displayStats(enemy);
-        let html = "";
-        if(enemy.type == "BANDIT"){
-            console.log("displaying bandit silhouette");
-            html = `<img class="bandit-bi battle-image" class="invisible" src="./img/bandit.png" alt="A bandit's silhouette">`
-            battleImageContainer.innerHTML = html;
-        }else if(enemy.type == "DUMMY"){
-            console.log("displaying dummy silhouette");
-            html = `<img class="dummy-bi battle-image" class="invisible" src="./img/dummy.png" alt="A dummy's silhouette">`
-            battleImageContainer.innerHTML = html;
-        };
     }
     const eventContainer = document.getElementById("event-container");
     eventContainer.scrollTop = eventContainer.scrollHeight;
@@ -58,7 +68,7 @@ function displayEvent(){
 const buttonStartCombat = document.querySelector(".button-start-combat")
 
 buttonStartCombat.addEventListener('click', function() {
-    combatOn();
+    combatOn(enemy);
 });
 
 let armory = [trainingBoots, trainingHelmet, trainingChestplate, trainingGloves, trainingPants, trainingSword]
@@ -67,8 +77,15 @@ function loadShop(insert) {
     const shopContainer = document.createElement("div");
     shopContainer.className = "game-container__shop-container";
     gameContainer.appendChild(shopContainer);
-    let typeOfShop = insert;
 
+    if(shopContainer == true){
+        shopContainer.remove()
+        const shopContainer = document.createElement("div");
+        shopContainer.className = "game-container__shop-container";
+        gameContainer.appendChild(shopContainer);
+    }
+
+    let typeOfShop = insert;
     if (typeOfShop == armory) {
         const armoryShopContainer = document.createElement("div");
         armoryShopContainer.className = "armory-shop shop";
@@ -84,7 +101,7 @@ function loadShop(insert) {
                 itemInfoDiv.className = `shop__item-info item-id-${insertItem.id}`;
             
                 itemInfoDiv.innerHTML = `
-                    <img class="shop__item__icon" src="https://placeholder.co/400" alt="">
+                    <img class="shop__item__icon" src="${insertItem.icon}" alt="">
                     <p class="shop__item__name">${insertItem.name}</p>
                     <p class="shop__item__price">$${insertItem.price}</p>
                 `;
@@ -99,7 +116,7 @@ function loadShop(insert) {
                 });
             }
             
-
+            
             createItem(Item);
         });
     } else {
