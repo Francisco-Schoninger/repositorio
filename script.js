@@ -50,7 +50,7 @@ function loadTutorialPart3(){
             setTimeout(function() {
                 clearInterval(interval);
                 enemy = mob1;
-                logEvent(`Te sorprende ${mob1.nickname}, un hombre delgado vestido de ropa desgastada, unas hombreras de hierro oxidadas y un pañuelo naranja que le tapa la boca. Tiene una daga relativamente bien cuidada en su mano derecha.`);turnBattleImageContainer(true, "BANDIT");
+                logEvent(`Te sorprende ${mob1.nickname}, un hombre delgado vestido de ropa desgastada, unas botas de moda caras y un pañuelo naranja que le tapa la boca. Tiene una daga relativamente bien cuidada en su mano derecha.`);turnBattleImageContainer(true, "BANDIT");
                 setTimeout(function() {
                     clearInterval(interval);
                     logEvent(`Bandido Springs: Hey, tú! Dame lo que tengas, debilucho. Un simple novato del arte de las peleas no podrá contra mí, el grandioso Springs`);

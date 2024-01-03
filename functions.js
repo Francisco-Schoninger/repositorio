@@ -24,6 +24,9 @@ let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 let user1Stats = new Stats(200, 200, 0, 20)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
+
+let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
+
 let mob1Stats = new Stats(200, 200, 0, 25)
 let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT");
 
@@ -33,6 +36,36 @@ let defeatedMob = new User("NO ENEMY", 0, defeatedMobStats.maxHealth,defeatedMob
 let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, 0, 0);
 let dummy = new User("Objetivo de Práctica", 0, dummyStats.maxHealth,dummyStats.health,dummyStats.resistance,dummyStats.damage, "DUMMY");
 
+
+
+function updateStats(entityToUpdate){
+    if(entityToUpdate == user1){
+        let user1AdditionalStats = user1Items.reduce((accumulator, currentItem) => {
+            return {
+                health: accumulator.health + currentItem.health,
+                resistance: accumulator.resistance + currentItem.resistance,
+                damage: accumulator.damage + currentItem.damage,
+            };
+        });
+        user1.maxHealth = user1AdditionalStats.health + user1Stats.maxHealth;
+        user1.resistance = user1AdditionalStats.resistance + user1Stats.resistance;
+        user1.damage = user1AdditionalStats.damage + user1Stats.damage;
+    }else if(entityToUpdate == mob1){
+        let mob1AdditionalStats = mob1Items.reduce((accumulator, currentItem) => {
+            return {
+                health: accumulator.health + currentItem.health,
+                resistance: accumulator.resistance + currentItem.resistance,
+                damage: accumulator.damage + currentItem.damage,
+            };
+        });
+        mob1.maxHealth = mob1AdditionalStats.health + mob1Stats.maxHealth;
+        mob1.resistance = mob1AdditionalStats.resistance + mob1Stats.resistance;
+        mob1.damage = mob1AdditionalStats.damage + mob1Stats.damage;
+    }
+}
+
+updateStats(user1);
+updateStats(mob1);
 
 let enemy = defeatedMob;
 let user = user1;
