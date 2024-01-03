@@ -116,7 +116,7 @@
 .enemy-attack-border{
     height: 5rem;
     width: 5rem;
-    border: 2px solid black;
+    border: 2px solid #696969;
     position: relative;
     z-index: 2000;
 }
