@@ -24,7 +24,6 @@ let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 let user1Stats = new Stats(200, 200, 0, 20)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
-
 let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
 
 let mob1Stats = new Stats(200, 200, 0, 25)
@@ -50,6 +49,9 @@ function updateStats(entityToUpdate){
         user1.maxHealth = user1AdditionalStats.health + user1Stats.maxHealth;
         user1.resistance = user1AdditionalStats.resistance + user1Stats.resistance;
         user1.damage = user1AdditionalStats.damage + user1Stats.damage;
+        if(user1.health === user1.maxHealth -user1AdditionalStats.health){
+            user1.health = user1.maxHealth
+        }
     }else if(entityToUpdate == mob1){
         let mob1AdditionalStats = mob1Items.reduce((accumulator, currentItem) => {
             return {
@@ -61,6 +63,9 @@ function updateStats(entityToUpdate){
         mob1.maxHealth = mob1AdditionalStats.health + mob1Stats.maxHealth;
         mob1.resistance = mob1AdditionalStats.resistance + mob1Stats.resistance;
         mob1.damage = mob1AdditionalStats.damage + mob1Stats.damage;
+        if(mob1.health === mob1.maxHealth - mob1AdditionalStats.health){
+            mob1.health = mob1.maxHealth
+        }
     }
 }
 
@@ -120,6 +125,11 @@ function enemyAttack(player, enemy, enemyDamageInput) {
         if (indicatorFill < 100) {
             indicatorFill++;
             enemyAttackIndicatorFill.style.width = `${indicatorFill}%`;
+            if(enemy.health <= 0){
+                clearInterval(fillAnimation);
+                turnAttackButton(false);
+                enemyAttackIndicatorBorder.remove();
+            }
         } else if (indicatorFill === 100) {
             clearInterval(fillAnimation);
             enemyAttackIndicatorBorder.removeEventListener('click', clickHandler);
@@ -135,6 +145,7 @@ function enemyAttack(player, enemy, enemyDamageInput) {
                 enemyAttackIndicatorBorder.remove();
             }, 250);
             if(player.health <= 0){
+                turnAttackButton(false);
                 player.health = 0;
                 let playerBounty = player.gold * 34 / 100;
                 player.gold = player.gold - playerBounty;
@@ -150,8 +161,8 @@ function enemyAttack(player, enemy, enemyDamageInput) {
                                 combatOff();
                                 player.health = player.maxHealth;
                                 setTimeout(function(){
-                                    player.gold = player.gold + playerBounty;
-                                    player.gold = player.gold + 21.12;
+                                    player.gold += playerBounty;
+                                    player.gold += 21.12;
                                     logEvent(`Recuperas tu Oro, y resulta que la bolsa tenía aún más. Oro actual de ${player.nickname}: ${player.gold}`);
                                     enemy = defeatedMob;
                                     combatOff();
@@ -364,37 +375,5 @@ function attack(dealer, enemyToAttack){
             }, 1000)
         };
     };
-
-    // if (enemyToAttack != dummy){
-    //     let enemyAttackProbability = getRandomInt(100);
-    //     if(enemyAttackProbability >= 13 && enemyToAttack.health > 0){
-    //         let enemyDamageInput = enemyToAttack.damage - dealer.resistance;
-    //         enemyDamageInput = enemyDamageInput + getRandomInt(enemyDamageInput/2);
-    //         console.log("enemydamageinput" + enemyDamageInput);
-    //         setTimeout(function() {
-    //             clearInterval(interval);
-    //             logEvent(`${enemyToAttack.nickname} te ataca!`);
-    //             setTimeout(function() {
-    //                     logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: ${dealer.health}`);
-    //                     turnAttackButton(true)
-    //                 }
-    //             }, 750);
-    //         }, 750);
-    //         dealer.health = dealer.health - enemyDamageInput;
-    //     }else if(enemyToAttack.health <= 0){
-    //         combatOff()
-    //         enemyToAttack.health = enemyToAttack.maxHealth;
-    //         dealer.health = dealer.maxHealth;
-    //     }else{
-    //         setTimeout(function(){
-    //             logEvent(`${enemyToAttack.nickname} te ataca! Pero falla el ataque.`);
-    //             turnAttackButton(true);
-    //         },750)
-    //     };
-    // }else if(enemyToAttack.health <= 0){
-    //     enemyToAttack.health = enemyToAttack.maxHealth;
-    //     dealer.health = dealer.maxHealth;
-    // }
-
 };
 

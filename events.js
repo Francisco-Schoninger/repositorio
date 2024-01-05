@@ -33,10 +33,6 @@ function turnBattleImageContainer(value, type) {
     }
 }
 
-// Luego puedes llamar a la función con los valores correspondientes
-// turnBattleImageContainer(false, "BANDIT");
-
-
 function logEvent(event){
     let eventLogged = event;
     eventLog.push(new Event(eventLogged));
@@ -131,26 +127,3 @@ function closeShop(){
 
 
 
-
-// function createNewItem(itemToCreate){
-//     let item = itemToCreate
-//     armoryShop.innerHTML = armoryShop.innerHTML + `
-//     <div class="shop__item">
-//         <button class="shop__item-info  item-id-${item.id}">
-//             <img class="shop__item__icon" src="https://placeholder.co/400" alt="">
-//             <p class="shop__item__name">${item.name}</p>
-//             <p class="shop__item__price">$${item.price}</p>
-//         </button>
-//     </div>`;
-//     function createButtonItem(buttonItemId){
-//         let buttonItem = buttonItemId;
-//         console.log(buttonItem);
-//         console.log("created button item for " + buttonItem.name)
-//         buttonItem.addEventListener('click',function(){
-//             console.log("clicked!")
-//             displayItemDetailedInformation(buttonItem);
-//         })
-//     }
-//     createButtonItem(itemToCreateButton);
-// }
-// createNewItem(Item);
