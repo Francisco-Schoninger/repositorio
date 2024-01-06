@@ -21,12 +21,12 @@ function User(userNickname,userGold,userMaxHealth,userHealth,userResistance,user
 
 let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 
-let user1Stats = new Stats(200, 200, 0, 20)
+let user1Stats = new Stats(100, 100, 0, 20)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
 let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
 
-let mob1Stats = new Stats(200, 200, 0, 20)
+let mob1Stats = new Stats(100, 100, 0, 20)
 let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT");
 
 let defeatedMobStats = new Stats(0,0,0,0);
@@ -106,9 +106,9 @@ function enemyAttack(player, enemy, enemyDamageInput) {
         enemyAttackIndicatorBorder.removeEventListener('click', clickHandler);
         enemyAttackIndicatorFill.style.backgroundColor = "blue";
         enemyDamageInput = Math.round(enemyDamageInput);
-        let enemyDamageRealInput = enemyDamageInput / 3;
+        let enemyDamageRealInput = enemyDamageInput / 4;
         enemyDamageRealInput = Math.round(enemyDamageRealInput);
-        logEvent(`¡Bloqueaste ${Math.round(enemyDamageInput / 3 * 2)} de daño de ${enemy.nickname}! Recibes ${enemyDamageRealInput} de daño.`);
+        logEvent(`¡Bloqueaste ${Math.round(enemyDamageInput / 4 * 3)} de daño de ${enemy.nickname}! Recibes ${enemyDamageRealInput} de daño.`);
         player.health = player.health - enemyDamageRealInput;
         setTimeout(function(){
             logEvent(`Vida actual de ${player.nickname}: ${player.health}`);
