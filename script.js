@@ -27,9 +27,12 @@ function loadTutorialPart2(){
     enemy = defeatedMob;
     logEvent(`Maestro Thomas: Vaya... Tendré que reparar eso, ${user.nickname}.`);
     setTimeout(function(){
+        user1Items.splice(trainingGloves, 1);
+        updateStats(user);
+        displayStats(user);
         logEvent(`Notas que tus guantes se rompieron. Te los quitas y los tiras a la basura.`);
         setTimeout(function(){
-            let html = `<div class="next-button-container"><button class="next-button">IR A COMPRAR GUANTES NUEVOS</button></div>`;
+            let html = `<div class="next-button-container"><button class="next-button">IR A LA TIENDA</button></div>`;
             actionsContainer.innerHTML = actionsContainer.innerHTML + html;
             let nextSceneButton = document.querySelector(".next-button");
             nextSceneButton.addEventListener('click',function(){

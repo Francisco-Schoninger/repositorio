@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Inconsolata:wght@300;600&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -162,6 +162,14 @@
     overflow-y: auto;
 }
 
+.shop__title{
+    font-family: 'Holtwood One SC', serif;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: 300;
+    color: #161615;
+}
+
 .shop__item{
     width: 49%;
     height: 35%;
@@ -218,6 +226,26 @@
     justify-self: center;
     justify-content: center;
     background-color:#d88b8b;
+    display: grid;
+}
+
+.shop__item__detailed-info button{
+    font-size: 1.8rem;
+    height: max-content;
+    width: 70%;
+    justify-self: center;
+    margin: 0.3rem 0 0.3rem 0;
+    border: 2px solid black;
+    padding: 0.2rem;
+    transition: all 0.2s;
+}
+
+.shop__item__detailed-info button:hover{
+    transform: scale(1.065);
+}
+
+button:hover{
+    cursor: pointer;
 }
 
 .shop__item__detailed-info p:last-child{

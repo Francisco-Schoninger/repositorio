@@ -86,6 +86,18 @@ function loadShop(insert) {
         const armoryShopContainer = document.createElement("div");
         armoryShopContainer.className = "armory-shop shop";
         shopContainer.appendChild(armoryShopContainer);
+        const buttonCloseShop = document.createElement("button");
+        buttonCloseShop.className = "button-close-shop";
+        actionsContainer.appendChild(buttonCloseShop);
+        buttonCloseShop.innerHTML = "SALIR DE LA TIENDA";
+        const armoryShopTitle = document.createElement("h2");
+        armoryShopTitle.className = "shop__title";
+        armoryShopTitle.innerHTML = "Armería de Kethis";
+        armoryShopContainer.appendChild(armoryShopTitle);
+        buttonCloseShop.addEventListener('click', function(){
+            closeShop();
+            buttonCloseShop.remove()
+        });
         armory.forEach((Item) => {
             function createItem(insertItem) {
                 const armoryShop = document.querySelector(".armory-shop");
@@ -121,8 +133,9 @@ function loadShop(insert) {
 }
 
 function closeShop(){
-    
-}
+    const shopContainer = document.querySelector(".game-container__shop-container")
+    shopContainer.remove();
+};
 
 
 

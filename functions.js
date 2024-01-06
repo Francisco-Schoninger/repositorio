@@ -26,7 +26,7 @@ let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Sta
 
 let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
 
-let mob1Stats = new Stats(200, 200, 0, 25)
+let mob1Stats = new Stats(200, 200, 0, 20)
 let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT");
 
 let defeatedMobStats = new Stats(0,0,0,0);
@@ -46,10 +46,11 @@ function updateStats(entityToUpdate){
                 damage: accumulator.damage + currentItem.damage,
             };
         });
+        console.log(user1AdditionalStats);
         user1.maxHealth = user1AdditionalStats.health + user1Stats.maxHealth;
         user1.resistance = user1AdditionalStats.resistance + user1Stats.resistance;
         user1.damage = user1AdditionalStats.damage + user1Stats.damage;
-        if(user1.health === user1.maxHealth -user1AdditionalStats.health){
+        if(combat == false){
             user1.health = user1.maxHealth
         }
     }else if(entityToUpdate == mob1){
@@ -85,6 +86,7 @@ let actionsContainer = document.querySelector("#actions-container");
 let enemyInfoContainer = document.getElementById("enemy-info-container");
 
 function enemyAttack(player, enemy, enemyDamageInput) {
+    console.log("MIRAR LA CONSOLA MIENTRAS JUGÁS ES DE MALA EDUCACIÓN (No lo hice responsive, capaz se te rompa)");
     let enemyAttackIndicatorBorder = document.createElement("div");
     enemyAttackIndicatorBorder.className = "enemy-attack-border";
     gameContainer.appendChild(enemyAttackIndicatorBorder);
@@ -107,16 +109,47 @@ function enemyAttack(player, enemy, enemyDamageInput) {
         let enemyDamageRealInput = enemyDamageInput / 3;
         enemyDamageRealInput = Math.round(enemyDamageRealInput);
         logEvent(`¡Bloqueaste ${Math.round(enemyDamageInput / 3 * 2)} de daño de ${enemy.nickname}! Recibes ${enemyDamageRealInput} de daño.`);
-        turnAttackButton(true);
+        player.health = player.health - enemyDamageRealInput;
         setTimeout(function(){
-            player.health = player.health - enemyDamageRealInput;
             logEvent(`Vida actual de ${player.nickname}: ${player.health}`);
+            if(player.health <= 0){
+                turnAttackButton(false);
+            }else{
+                turnAttackButton(true);
+            }
         }, 250);
         clearInterval(fillAnimation);
-
         setTimeout(function(){
             enemyAttackIndicatorBorder.remove();
         }, 200);
+        if(player.health <= 0){
+            turnAttackButton(false);
+            player.health = 0;
+            let playerBounty = player.gold * 34 / 100;
+            player.gold = player.gold - playerBounty;
+            logEvent(`Recibes ${enemyDamageInput} puntos de daño. Vida actual: 0`);
+            setTimeout(function(){
+                logEvent(`Has sido derrotado y perdiste ${playerBounty} de Oro (Oro actual: ${player.gold})`);
+                setTimeout(function(){
+                    logEvent(`${enemy.nickname}: Y ahora... ¡El golpe final...! *Se posiciona glorioso para dar el último golpe y acabar contigo`);
+                    setTimeout(function(){
+                        logEvent(`Ves una figura gritando "¡Alto ahí!" que va corriendo a saltos hacia la ubicación del combate.`);
+                        setTimeout(function(){
+                            logEvent(`${enemy.nickname} se va corriendo a toda marcha. En el arranque, se le cae la bolsa de lana rosa en la que puso tu Oro.`);
+                            combatOff();
+                            player.health = player.maxHealth;
+                            setTimeout(function(){
+                                player.gold += playerBounty;
+                                player.gold += 21.12;
+                                logEvent(`Recuperas tu Oro, y resulta que la bolsa tenía aún más. Oro actual de ${player.nickname}: ${player.gold}`);
+                                enemy = defeatedMob;
+                                combatOff();
+                            },2500)
+                        },4500)
+                    },4500)
+                },400)
+            }, 200)
+        }else{}
     }
 
     enemyAttackIndicatorBorder.addEventListener('click', clickHandler);
@@ -265,7 +298,52 @@ function displayItemDetailedInformation(value){
         <p class="shop__item__detailed-info__resistance">RESISTENCIA: ${value.resistance}</p>
         <p class="shop__item__detailed-info__damage">DAÑO: ${value.damage}</p>
         <p class="shop__item__detailed-info__type">TIPO: ${value.type}</p>
+        <button class="shop__item__detailed-info__purchase-button">COMPRAR</button>
     </div>`;
+    const buttonPurchaseItem = document.querySelector(".shop__item__detailed-info__purchase-button");
+    buttonPurchaseItem.addEventListener('click', function(){
+        if(user.gold - value.price >= 0){
+            console.log("Buying...");
+            if(user1Items.includes(value)){
+                buttonPurchaseItem.innerHTML = "YA TIENES ESTE ITEM";
+                buttonPurchaseItem.style.border = "2px solid red";
+                buttonPurchaseItem.style.color = "red";
+                setTimeout(function(){
+                    buttonPurchaseItem.innerHTML = "COMPRAR";
+                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.color = "black";
+                }, 1000);
+            }else{
+                user.gold = user1.gold - value.price;
+                user1Items.push(value);
+                updateStats(user1);
+
+                buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
+                buttonPurchaseItem.style.border = "2px solid green";
+                buttonPurchaseItem.style.color = "green";
+                setTimeout(function(){
+                    buttonPurchaseItem.innerHTML = "COMPRAR";
+                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.color = "black";
+                }, 1000);
+
+                if(value.health > 0){
+                    user.health = user.maxHealth;
+                };
+                displayStats(user);
+            }
+        }else{
+            buttonPurchaseItem.innerHTML = "NO TIENES SUFICIENTE ORO";
+            buttonPurchaseItem.style.border = "2px solid red";
+            buttonPurchaseItem.style.color = "red"
+            setTimeout(function(){
+                buttonPurchaseItem.innerHTML = "COMPRAR";
+                buttonPurchaseItem.style.border = "2px solid black";
+                buttonPurchaseItem.style.color = "black"
+            }, 1000);
+            console.log("not enough gold");
+        }
+    })
 }
 
 function hideStats(entity){
