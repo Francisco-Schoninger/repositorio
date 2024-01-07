@@ -97,6 +97,7 @@ function loadShop(insert) {
         buttonCloseShop.addEventListener('click', function(){
             closeShop();
             buttonCloseShop.remove()
+            gameContainer.innerHTML = "<p>Hasta acá llegué con el proyecto. ;)</p>"
         });
         armory.forEach((Item) => {
             function createItem(insertItem) {

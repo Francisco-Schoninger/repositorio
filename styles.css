@@ -143,7 +143,6 @@
 
 .info-container{
     font-size: 1.5rem;
-    padding: 5rem 0 5rem 0;
 }
 
 .invisible{
@@ -260,4 +259,44 @@ button:hover{
     left: 50%;
     transform: translate(-50%);
     margin: 1rem 0 1rem 0;
+}
+
+.user-info-container__inventory-button{
+    height: max-content;
+    width: 97%;
+    margin: auto;
+    display: block;
+    font-size: 1.2rem;
+}
+
+.inventory-container{
+    width: 97%;
+    height: 70%;
+    border: 1px solid black;
+    overflow: hidden;
+    margin: auto;
+}
+
+.inventory__item__info{
+    width: 90%;
+    height: 20%;
+    overflow: auto;
+    margin: auto;
+    margin-top: 0.2rem;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-template-rows: 100%;
+    grid-template-areas: 
+    "ii-icon ii-name";
+    border: 1px solid black;
+}
+
+.inventory__item__icon{
+    height: 3rem;
+    grid-area: ii-icon;
+}
+
+.inventory__item__name{
+    font-size: 1rem;
+    grid-area: ii-name;
 }

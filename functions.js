@@ -21,7 +21,7 @@ function User(userNickname,userGold,userMaxHealth,userHealth,userResistance,user
 
 let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 
-let user1Stats = new Stats(100, 100, 0, 20)
+let user1Stats = new Stats(100, 100, 0, 26)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
 let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
@@ -317,10 +317,10 @@ function displayItemDetailedInformation(value){
                 user.gold = user1.gold - value.price;
                 user1Items.push(value);
                 updateStats(user1);
-
                 buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
                 buttonPurchaseItem.style.border = "2px solid green";
                 buttonPurchaseItem.style.color = "green";
+                updateInventoryDisplay(user)
                 setTimeout(function(){
                     buttonPurchaseItem.innerHTML = "COMPRAR";
                     buttonPurchaseItem.style.border = "2px solid black";
@@ -362,12 +362,81 @@ if(entityToDisplayInHTML == enemy){
 }
 }
 
-function displayStats(entity){
-    let enemyInfoContainer = document.getElementById("enemy-info-container");
+
+let inventoryOpen = false;
+let inventoryContainer = null;
+
+function createItem(insertItem) {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "inventory__item";
+
+    const itemInfoDiv = document.createElement("div");
+    itemInfoDiv.className = `inventory__item__info item-id-${insertItem.id}`;
+
+    itemInfoDiv.innerHTML = `
+        <img class="inventory__item__icon" src="${insertItem.icon}" alt="">
+        <p class="inventory__item__name">${insertItem.name}</p>
+    `;
+    itemDiv.appendChild(itemInfoDiv);
+
+    return itemDiv;
+}
+
+function updateInventoryDisplay(entity) {
+    if (!inventoryContainer) {
+        inventoryContainer = document.createElement('div');
+        inventoryContainer.className = "inventory-container";
+    } else {
+        inventoryContainer.innerHTML = "";
+    }
+
+    if (entity == user) {
+        user1Items.forEach((Item) => {
+            const itemElement = createItem(Item);
+            inventoryContainer.appendChild(itemElement);
+        });
+    }
+}
+
+function handleInventoryButtonClick(entity) {
     let userInfoContainer = document.getElementById("user-info-container");
+    let buttonOpenInventory = document.querySelector(".user-info-container__inventory-button");
+    if (inventoryOpen) {
+        inventoryContainer.innerHTML = "";
+        userInfoContainer.removeChild(inventoryContainer);
+        buttonOpenInventory.innerHTML = "ABRIR INVENTARIO";
+        inventoryOpen = false;
+    } else {
+        updateInventoryDisplay(entity);
+        userInfoContainer.appendChild(inventoryContainer);
+        buttonOpenInventory.innerHTML = "CERRAR INVENTARIO";
+        inventoryOpen = true;
+    }
+}
+
+function displayInventoryButton(entity) {
+    let buttonOpenInventory = document.createElement("button");
+    buttonOpenInventory.className = "user-info-container__inventory-button";
+    buttonOpenInventory.innerHTML = "ABRIR INVENTARIO";
+
+    let userInfoContainer = document.getElementById("user-info-container");
+
+    buttonOpenInventory.addEventListener('click', function () {
+        handleInventoryButtonClick(entity);
+    });
+    userInfoContainer.appendChild(buttonOpenInventory);
+}
+let displayingInventoryButton = false;
+let userInfoContainer = document.getElementById("user-info-container");
+let userStatsContainer = document.createElement('div');
+userStatsContainer.className = "user-stats-container";
+userInfoContainer.appendChild(userStatsContainer);
+
+function displayStats(entity){
     let entityToDisplayInHTML = entity;
     if(entity == user){
-        userInfoContainer.innerHTML = `<p>NOMBRE: ${entityToDisplayInHTML.nickname}</p><p>VIDA: ${entityToDisplayInHTML.health}/${entityToDisplayInHTML.maxHealth}</p><p>DAÑO: ${entityToDisplayInHTML.damage}</p><p>RESISTENCIA: ${entityToDisplayInHTML.resistance}</p><p>ORO: ${entityToDisplayInHTML.gold}</p>`;
+        userStatsContainer.innerHTML = ``;
+        userStatsContainer.innerHTML = `<p>NOMBRE: ${entityToDisplayInHTML.nickname}</p><p>VIDA: ${entityToDisplayInHTML.health}/${entityToDisplayInHTML.maxHealth}</p><p>DAÑO: ${entityToDisplayInHTML.damage}</p><p>RESISTENCIA: ${entityToDisplayInHTML.resistance}</p><p>ORO: ${entityToDisplayInHTML.gold}</p>`;
         console.log("displaying user");
     }else{
         console.log("not display user");
@@ -381,8 +450,8 @@ function displayStats(entity){
 };
 
 displayStats(user);
+displayInventoryButton(user);
 hideStats(enemy);
-
 
 function attack(dealer, enemyToAttack){
     turnAttackButton(false);
