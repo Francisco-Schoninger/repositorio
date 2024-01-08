@@ -271,10 +271,11 @@ button:hover{
 
 .inventory-container{
     width: 97%;
-    height: 70%;
+    height: 50%;
     border: 1px solid black;
-    overflow: hidden;
+    overflow: auto;
     margin: auto;
+    background-color: #918f96;
 }
 
 .inventory__item__info{
@@ -289,6 +290,7 @@ button:hover{
     grid-template-areas: 
     "ii-icon ii-name";
     border: 1px solid black;
+    background-color: #aba9b1;
 }
 
 .inventory__item__icon{
