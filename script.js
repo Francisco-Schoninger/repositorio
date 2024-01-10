@@ -27,6 +27,12 @@ function loadTutorialPart2(){
     enemy = defeatedMob;
     logEvent(`Maestro Thomas: Vaya... Tendré que reparar eso, ${user.nickname}.`);
     setTimeout(function(){
+<<<<<<< Updated upstream
+=======
+        removeInventoryItem("user1Inventory", user, trainingGloves);
+        updateStats(user);
+        displayStats(user);
+>>>>>>> Stashed changes
         logEvent(`Notas que tus guantes se rompieron. Te los quitas y los tiras a la basura.`);
         setTimeout(function(){
             let html = `<div class="next-button-container"><button class="next-button">IR A COMPRAR GUANTES NUEVOS</button></div>`;

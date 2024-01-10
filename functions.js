@@ -2,38 +2,121 @@ let entityInfoContainer = document.querySelector(".info-container");
 
 let combat = false;
 
-function Stats(mobMaxHealth,mobHealth,mobResistance,mobDamage){
+function Stats(mobMaxHealth, mobHealth, mobResistance, mobDamage) {
     this.maxHealth = mobMaxHealth;
     this.health = mobHealth;
     this.resistance = mobResistance;
     this.damage = mobDamage;
 }
 
-function User(userNickname,userGold,userMaxHealth,userHealth,userResistance,userDamage,userType){
+function User(userNickname, userGold, userMaxHealth, userHealth, userResistance, userDamage, userType, userInventory) {
     this.nickname = userNickname;
     this.gold = userGold;
     this.maxHealth = userMaxHealth;
     this.health = userHealth;
     this.resistance = userResistance;
     this.damage = userDamage;
-    this.type = userType
-};
+    this.type = userType;
+    this.inventory = userInventory;
+}
 
-let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
+let user1Items = JSON.parse(localStorage.getItem("user1Inventory")) || [trainingGloves, trainingBoots, trainingChestplate, trainingPants];
 
+<<<<<<< Updated upstream
 let user1Stats = new Stats(312, 312, 17, 53)
 let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
 let mob1Stats = new Stats(320, 320, 4, 62)
 let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT");
+=======
+
+let user1Stats = new Stats(100, 100, 0, 26);
+let user1 = new User("Ashley", 60, user1Stats.maxHealth, user1Stats.health, user1Stats.resistance, user1Stats.damage, "PLAYER", user1Items);
+
+let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
+
+let mob1Stats = new Stats(100, 100, 0, 20)
+let mob1 = new User("Bandido Springs",96,mob1Stats.maxHealth,mob1Stats.health,mob1Stats.resistance,mob1Stats.damage,"BANDIT", mob1Items);
+>>>>>>> Stashed changes
 
 let defeatedMobStats = new Stats(0,0,0,0);
-let defeatedMob = new User("NO ENEMY", 0, defeatedMobStats.maxHealth,defeatedMobStats.health,defeatedMobStats.resistance, defeatedMobStats.damage,"NONE");
+let defeatedMob = new User("NO ENEMY", 0, defeatedMobStats.maxHealth,defeatedMobStats.health,defeatedMobStats.resistance, defeatedMobStats.damage,"NONE", null);
 
+<<<<<<< Updated upstream
 let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, null, null);
 let dummy = new User("Objetivo de Práctica", 0, dummyStats.maxHealth,dummyStats.health,dummyStats.resistance,dummyStats.damage, "DUMMY");
 
 
+=======
+let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, 0, 0);
+let dummy = new User("Objetivo de Práctica", 0, dummyStats.maxHealth,dummyStats.health,dummyStats.resistance,dummyStats.damage, "DUMMY", null);
+
+
+function saveInventoryItems(storagedName, inventory){
+    localStorage.setItem(storagedName, JSON.stringify(inventory));
+};
+
+function getInventoryItems(storagedName, user){
+    const storedInventory = localStorage.getItem(storagedName);
+    
+    if (storedInventory) {
+        user.inventory = JSON.parse(storedInventory);
+    }
+};
+
+function removeInventoryItem(storagedName, user, itemToRemove){
+    user.inventory.splice(itemToRemove, 1);
+    saveInventoryItems(storagedName, user.inventory);
+    getInventoryItems(storagedName, user);
+    updateStats(user);
+    updateInventoryDisplay(user)
+};
+
+function addInventoryItem(storagedName, user, itemToAdd){
+    user.inventory.push(itemToAdd);
+    saveInventoryItems(storagedName, user.inventory);
+    getInventoryItems(storagedName, user);
+    updateStats(user);
+    updateInventoryDisplay(user)
+}
+
+function updateStats(entityToUpdate){
+    if(entityToUpdate == user1){
+        let user1AdditionalStats = user1Items.reduce((accumulator, currentItem) => {
+            return {
+                health: accumulator.health + currentItem.health,
+                resistance: accumulator.resistance + currentItem.resistance,
+                damage: accumulator.damage + currentItem.damage,
+            };
+        });
+        console.log(user1AdditionalStats);
+        user1.maxHealth = user1AdditionalStats.health + user1Stats.maxHealth;
+        user1.resistance = user1AdditionalStats.resistance + user1Stats.resistance;
+        user1.damage = user1AdditionalStats.damage + user1Stats.damage;
+        if(combat == false){
+            user1.health = user1.maxHealth
+        }
+    }else if(entityToUpdate == mob1){
+        let mob1AdditionalStats = mob1Items.reduce((accumulator, currentItem) => {
+            return {
+                health: accumulator.health + currentItem.health,
+                resistance: accumulator.resistance + currentItem.resistance,
+                damage: accumulator.damage + currentItem.damage,
+            };
+        });
+        mob1.maxHealth = mob1AdditionalStats.health + mob1Stats.maxHealth;
+        mob1.resistance = mob1AdditionalStats.resistance + mob1Stats.resistance;
+        mob1.damage = mob1AdditionalStats.damage + mob1Stats.damage;
+        if(mob1.health === mob1.maxHealth - mob1AdditionalStats.health){
+            mob1.health = mob1.maxHealth
+        }
+    }
+}
+
+updateStats(user1);
+updateStats(mob1);
+
+>>>>>>> Stashed changes
 let enemy = defeatedMob;
 let user = user1;
 
@@ -131,7 +214,59 @@ function displayItemDetailedInformation(value){
         <p class="shop__item__detailed-info__damage">DAÑO: ${value.damage}</p>
         <p class="shop__item__detailed-info__type">TIPO: ${value.type}</p>
     </div>`;
+<<<<<<< Updated upstream
     
+=======
+    const buttonPurchaseItem = document.querySelector(".shop__item__detailed-info__purchase-button");
+    buttonPurchaseItem.addEventListener('click', function(){
+        if(user.gold - value.price >= 0){
+            console.log("Buying...");
+            console.log(user1Items);
+            if(user1Items.includes(JSON.parse(value))){
+                buttonPurchaseItem.innerHTML = "YA TIENES ESTE ITEM";
+                buttonPurchaseItem.style.border = "2px solid red";
+                buttonPurchaseItem.style.color = "red";
+                console.log("you already have this item!")
+                setTimeout(function(){
+                    buttonPurchaseItem.innerHTML = "COMPRAR";
+                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.color = "black";
+                }, 1000);
+            }else{
+                user.gold = user1.gold - value.price;
+                addInventoryItem("user1Inventory", user, value);
+                console.log("Compraste" + JSON.stringify(value.name));
+                console.log("user1Items es " + JSON.stringify(user1Items))
+                updateStats(user1);
+                buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
+                buttonPurchaseItem.style.border = "2px solid green";
+                buttonPurchaseItem.style.color = "green";
+                console.log("item purchased successfully")
+                updateInventoryDisplay(user)
+                setTimeout(function(){
+                    buttonPurchaseItem.innerHTML = "COMPRAR";
+                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.color = "black";
+                }, 1000);
+
+                if(value.health > 0){
+                    user.health = user.maxHealth;
+                };
+                displayStats(user);
+            }
+        }else{
+            buttonPurchaseItem.innerHTML = "NO TIENES SUFICIENTE ORO";
+            buttonPurchaseItem.style.border = "2px solid red";
+            buttonPurchaseItem.style.color = "red"
+            setTimeout(function(){
+                buttonPurchaseItem.innerHTML = "COMPRAR";
+                buttonPurchaseItem.style.border = "2px solid black";
+                buttonPurchaseItem.style.color = "black"
+            }, 1000);
+            console.log("not enough gold");
+        }
+    })
+>>>>>>> Stashed changes
 }
 
 function hideStats(entity){
