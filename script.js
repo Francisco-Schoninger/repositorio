@@ -32,7 +32,7 @@ function loadTutorialPart2(){
         displayStats(user);
         logEvent(`Notas que tus guantes se rompieron. Te los quitas y los tiras a la basura.`);
         setTimeout(function(){
-            let html = `<div class="next-button-container"><button class="next-button">IR A LA TIENDA</button></div>`;
+            let html = `<button class="next-button">IR A LA TIENDA</button>`;
             actionsContainer.innerHTML = actionsContainer.innerHTML + html;
             let nextSceneButton = document.querySelector(".next-button");
             nextSceneButton.addEventListener('click',function(){
@@ -83,7 +83,7 @@ function loadTutorialPart4(){
                             setTimeout(function(){
                                 logEvent(`Guardia Grewis: En fin, debo retirarme. ¡Adiós!`)
                                 setTimeout(function(){
-                                    let html = `<div class="next-button-container"><button class="next-button">ENTRAR A LA ARMERÍA DE KETHIS</button></div>`;
+                                    let html = `<button class="next-button">ENTRAR A LA ARMERÍA DE KETHIS</button>`;
                                     actionsContainer.innerHTML = actionsContainer.innerHTML + html;
                                     let nextSceneButton = document.querySelector(".next-button");
                                     nextSceneButton.addEventListener('click',function(){

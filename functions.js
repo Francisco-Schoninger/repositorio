@@ -155,14 +155,14 @@ function enemyAttack(player, enemy, enemyDamageInput) {
     enemyAttackIndicatorBorder.addEventListener('click', clickHandler);
 
     let fillAnimation = setInterval(function(){
+        if(enemy.health <= 0){
+            clearInterval(fillAnimation);
+            turnAttackButton(false);
+            enemyAttackIndicatorBorder.remove();
+        }
         if (indicatorFill < 100) {
             indicatorFill++;
             enemyAttackIndicatorFill.style.width = `${indicatorFill}%`;
-            if(enemy.health <= 0){
-                clearInterval(fillAnimation);
-                turnAttackButton(false);
-                enemyAttackIndicatorBorder.remove();
-            }
         } else if (indicatorFill === 100) {
             clearInterval(fillAnimation);
             enemyAttackIndicatorBorder.removeEventListener('click', clickHandler);
@@ -306,11 +306,11 @@ function displayItemDetailedInformation(value){
             console.log("Buying...");
             if(user1Items.includes(value)){
                 buttonPurchaseItem.innerHTML = "YA TIENES ESTE ITEM";
-                buttonPurchaseItem.style.border = "2px solid red";
+                buttonPurchaseItem.style.border = "0.00001vw solid red";
                 buttonPurchaseItem.style.color = "red";
                 setTimeout(function(){
                     buttonPurchaseItem.innerHTML = "COMPRAR";
-                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.border = "0.00001vw solid black";
                     buttonPurchaseItem.style.color = "black";
                 }, 1000);
             }else{
@@ -318,12 +318,12 @@ function displayItemDetailedInformation(value){
                 user1Items.push(value);
                 updateStats(user1);
                 buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
-                buttonPurchaseItem.style.border = "2px solid green";
+                buttonPurchaseItem.style.border = "0.00001vw solid green";
                 buttonPurchaseItem.style.color = "green";
                 updateInventoryDisplay(user)
                 setTimeout(function(){
                     buttonPurchaseItem.innerHTML = "COMPRAR";
-                    buttonPurchaseItem.style.border = "2px solid black";
+                    buttonPurchaseItem.style.border = "0.00001vw solid black";
                     buttonPurchaseItem.style.color = "black";
                 }, 1000);
 
@@ -334,11 +334,11 @@ function displayItemDetailedInformation(value){
             }
         }else{
             buttonPurchaseItem.innerHTML = "NO TIENES SUFICIENTE ORO";
-            buttonPurchaseItem.style.border = "2px solid red";
+            buttonPurchaseItem.style.border = "0.00001vw solid red";
             buttonPurchaseItem.style.color = "red"
             setTimeout(function(){
                 buttonPurchaseItem.innerHTML = "COMPRAR";
-                buttonPurchaseItem.style.border = "2px solid black";
+                buttonPurchaseItem.style.border = "0.00001vw solid black";
                 buttonPurchaseItem.style.color = "black"
             }, 1000);
             console.log("not enough gold");
@@ -356,7 +356,7 @@ function hideStats(entity){
     console.log("not hiding user");
 };
 if(entityToDisplayInHTML == enemy){
-    enemyInfoContainer.innerHTML = ``;
+    enemyStatsContainer.innerHTML = ``;
 }else{
     console.log("not hiding enemy");
 }
@@ -432,6 +432,10 @@ let userStatsContainer = document.createElement('div');
 userStatsContainer.className = "user-stats-container";
 userInfoContainer.appendChild(userStatsContainer);
 
+let enemyStatsContainer = document.createElement('div');
+enemyStatsContainer.className = "enemy-stats-container";
+enemyInfoContainer.appendChild(enemyStatsContainer);
+
 function displayStats(entity){
     let entityToDisplayInHTML = entity;
     if(entity == user){
@@ -442,7 +446,8 @@ function displayStats(entity){
         console.log("not display user");
     };
     if(entityToDisplayInHTML == enemy){
-        enemyInfoContainer.innerHTML = `<p>NOMBRE: ${entityToDisplayInHTML.nickname}</p><p>VIDA: ${entityToDisplayInHTML.health}/${entityToDisplayInHTML.maxHealth}</p><p>DAÑO: ${entityToDisplayInHTML.damage}</p><p>RESISTENCIA: ${entityToDisplayInHTML.resistance}</p><p>ORO: ${entityToDisplayInHTML.gold}</p>`
+        enemyStatsContainer.innerHTML = ``;
+        enemyStatsContainer.innerHTML = `<p>NOMBRE: ${entityToDisplayInHTML.nickname}</p><p>VIDA: ${entityToDisplayInHTML.health}/${entityToDisplayInHTML.maxHealth}</p><p>DAÑO: ${entityToDisplayInHTML.damage}</p><p>RESISTENCIA: ${entityToDisplayInHTML.resistance}</p><p>ORO: ${entityToDisplayInHTML.gold}</p>`
         console.log("displaying enemy");
     }else{
         console.log("not display enemy");
