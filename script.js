@@ -43,7 +43,7 @@ function checkScene(){
             displayStats(user1);
             updateInventoryDisplay(user1);
         }else{
-            logEvent(`¡Bienvenido, jugador! Estás en el cuerpo de Ashley, un aprendiz de guerrero del reino de Viellum.`)
+            logEvent(`¡Bienvenido, jugador! Estás en el cuerpo de Ash, un aprendiz de guerrero del reino de Viellum.`)
             setTimeout(function(){
             clearInterval(interval);
             logEvent(`Haz click en el botón para empezar el tutorial.`);
