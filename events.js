@@ -42,7 +42,8 @@ function logEvent(event){
     console.log(eventLog);
     displayEvent();
     if(enemy == defeatedMob){
-        displayStats(user);
+        updateStats(user1);
+        displayStats(user1);
         console.log("displaying user stats (events.js)");
     }else{
         displayStats(user);
@@ -98,6 +99,16 @@ function loadShop(insert) {
             closeShop();
             buttonCloseShop.remove()
             gameContainer.innerHTML = "<p>Hasta acá llegué con el proyecto. ;)</p>"
+            const clickableResetLocalStorage = document.createElement("p");
+            clickableResetLocalStorage.classList.add('clickable-reset-local-storage')
+            clickableResetLocalStorage.classList.add('background-red')
+            clickableResetLocalStorage.style.fontSize = '1.6vw'
+            clickableResetLocalStorage.innerHTML = "Clickea aquí para reiniciar el juego (¡Perderás todos los datos!)"
+            gameContainer.appendChild(clickableResetLocalStorage);
+            clickableResetLocalStorage.addEventListener('click', function(){
+                localStorage.clear();
+                window.location.reload();
+            })
         });
         armory.forEach((Item) => {
             function createItem(insertItem) {

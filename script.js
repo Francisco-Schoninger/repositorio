@@ -3,20 +3,67 @@ enemy = defeatedMob;
 combat = false;
 combatOff()
 
-logEvent(`¡Bienvenido, jugador! Estás en el cuerpo de Ashley, un aprendiz de guerrero del reino de Viellum.`)
-setTimeout(function(){
-    clearInterval(interval);
-    logEvent(`Haz click en el botón para empezar el tutorial.`);
-    buttonStartTutorial.classList.remove('invisible');
-}, 2000);
+
+
+checkStoragedItems(user1Items, "user1Items");
+updateStats(user1);
+displayStats(user1);
+
+function checkScene(){
+    if(localStorage.getItem('lastScene') !== undefined){
+        console.log(localStorage.getItem('lastScene'))
+        if(localStorage.getItem('lastScene') == '1'){
+            loadTutorial();
+            checkStoragedItems(user1Items, "user1Items");
+            updateStats(user1);
+            displayStats(user1);
+            updateInventoryDisplay(user1);
+        }else if(localStorage.getItem('lastScene') == '2'){
+            loadTutorialPart2();
+            checkStoragedItems(user1Items, "user1Items");
+            updateStats(user1);
+            displayStats(user1);
+            updateInventoryDisplay(user1);
+        }else if(localStorage.getItem('lastScene') == '3'){
+            loadTutorialPart3();
+            checkStoragedItems(user1Items, "user1Items");
+            updateStats(user1);
+            displayStats(user1);
+            updateInventoryDisplay(user1);
+        }else if(localStorage.getItem('lastScene') == '4'){
+            loadTutorialPart4();
+            checkStoragedItems(user1Items, "user1Items");
+            updateStats(user1);
+            displayStats(user1);
+            updateInventoryDisplay(user1);
+        }else if(localStorage.getItem('lastScene') == '5'){
+            loadShop(armory);
+            checkStoragedItems(user1Items, "user1Items");
+            updateStats(user1);
+            displayStats(user1);
+            updateInventoryDisplay(user1);
+        }else{
+            logEvent(`¡Bienvenido, jugador! Estás en el cuerpo de Ashley, un aprendiz de guerrero del reino de Viellum.`)
+            setTimeout(function(){
+            clearInterval(interval);
+            logEvent(`Haz click en el botón para empezar el tutorial.`);
+            buttonStartTutorial.classList.remove('invisible');
+        }, 2000);
+        }
+    }
+};
+
+checkScene()
+
 
 console.log(`Nombre: ${user1.nickname}\nOro: ${user1.gold}\nVida Máxima: ${user1.maxHealth}\nResistencia: ${user1.resistance}\nDaño: ${user1.damage}`);
 
 function loadTutorial(){
+    localStorage.setItem("lastScene", '1')
     logEvent(`Estás en el centro de entrenamiento de guerreros. Es la última hora, pero no te sientes cansado.`);
     setTimeout(function(){
         enemy = dummy;
-        logEvent(`Maestro Thomas: Bien, muchachos y muchachas, vamos a hacer una última simulación de combate con un objetivo de práctica y después podrán largarse.`);
+        logEvent(`Maestro Thomas: Escúchenme, alumnos. Vamos a hacer una última simulación de combate con un objetivo de práctica y después podrán largarse.`);
         setTimeout(function(){
             enableCombatButton(`EL OBJETIVO DE PRÁCTICA NO TE HARÁ DAÑO<br>LA RESISTENCIA ES LA CANTIDAD DE PUNTOS DE DAÑO QUE REDUCIRÁS CUANDO TE ATAQUEN<br>HAZ CLICK EN ESTE BOTÓN PARA INICIAR EL COMBATE`,"tutorial");
         },762);
@@ -24,6 +71,7 @@ function loadTutorial(){
 }
 
 function loadTutorialPart2(){
+    localStorage.setItem("lastScene", '2')
     enemy = defeatedMob;
     logEvent(`Maestro Thomas: Vaya... Tendré que reparar eso, ${user.nickname}.`);
     setTimeout(function(){
@@ -44,6 +92,7 @@ function loadTutorialPart2(){
 }
 
 function loadTutorialPart3(){
+    localStorage.setItem("lastScene", '3')
     setTimeout(function() {
         clearInterval(interval);
         logEvent(`Terminas el día de entrenamiento con tus compañeros.`)
@@ -68,6 +117,7 @@ function loadTutorialPart3(){
 }
 
 function loadTutorialPart4(){
+    localStorage.setItem("lastScene", '4')
     setTimeout(function(){
         logEvent(`*Llega corriendo el Guardia Grewis, un hombre de estatura baja, cuerpo obeso y una papada que le recorre de oreja a oreja. Lleva puesta una armadura propia de los guardias de Kethis*`)
         setTimeout(function(){
@@ -89,6 +139,7 @@ function loadTutorialPart4(){
                                     nextSceneButton.addEventListener('click',function(){
                                         loadShop(armory);
                                         nextSceneButton.classList.add("invisible");
+                                        localStorage.setItem("lastScene", '5')
                                     })
                                 }, 600)
                             }, 8000)

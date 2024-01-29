@@ -22,7 +22,7 @@ function User(userNickname,userGold,userMaxHealth,userHealth,userResistance,user
 let user1Items = [trainingGloves,trainingChestplate,trainingPants,trainingBoots]
 
 let user1Stats = new Stats(100, 100, 0, 26)
-let user1 = new User("Ashley",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
+let user1 = new User("Ash",60,user1Stats.maxHealth,user1Stats.health,user1Stats.resistance,user1Stats.damage,"PLAYER");
 
 let mob1Items = [basicMetalDagger, ageWornChestplate, ageWornPants, kerchief, marketBoots]
 
@@ -35,6 +35,27 @@ let defeatedMob = new User("NO ENEMY", 0, defeatedMobStats.maxHealth,defeatedMob
 let dummyStats = new Stats(user1Stats.damage * 5, user1Stats.damage * 5, 0, 0);
 let dummy = new User("Objetivo de Práctica", 0, dummyStats.maxHealth,dummyStats.health,dummyStats.resistance,dummyStats.damage, "DUMMY");
 
+function checkStoragedItems(inventoryToSave, storagedInventoryToCheck){
+    if(localStorage.getItem(storagedInventoryToCheck) && inventoryToSave == user1Items){;
+        user1Items = JSON.parse(localStorage.getItem(storagedInventoryToCheck));
+        updateInventoryDisplay(user1);
+        console.log("items transferred from localStorage to variable succesfully");
+    }else if(!localStorage.getItem(storagedInventoryToCheck) && inventoryToSave == user1Items){
+        localStorage.setItem(storagedInventoryToCheck, JSON.stringify(inventoryToSave));
+        user1Items = JSON.parse(localStorage.getItem(storagedInventoryToCheck));
+        console.log("inventory created in localStorage and transferred to variable succesfully");
+    };
+    console.log(inventoryToSave);
+};
+
+function updateStoragedItems(inventoryToUpdate, storagedInventoryToUpdate){
+    if(localStorage.getItem(storagedInventoryToUpdate)){
+        localStorage.setItem(storagedInventoryToUpdate, JSON.stringify(inventoryToUpdate));
+        inventoryToUpdate = JSON.parse(localStorage.getItem(storagedInventoryToUpdate))
+    }else{
+        console.log("ERROR: This inventory does not exist in localStorage!")
+    }
+}
 
 
 function updateStats(entityToUpdate){
@@ -304,42 +325,55 @@ function displayItemDetailedInformation(value){
     buttonPurchaseItem.addEventListener('click', function(){
         if(user.gold - value.price >= 0){
             console.log("Buying...");
-            if(user1Items.includes(value)){
-                buttonPurchaseItem.innerHTML = "YA TIENES ESTE ITEM";
-                buttonPurchaseItem.style.border = "0.00001vw solid red";
-                buttonPurchaseItem.style.color = "red";
-                setTimeout(function(){
-                    buttonPurchaseItem.innerHTML = "COMPRAR";
-                    buttonPurchaseItem.style.border = "0.00001vw solid black";
-                    buttonPurchaseItem.style.color = "black";
-                }, 1000);
-            }else{
-                user.gold = user1.gold - value.price;
-                user1Items.push(value);
-                updateStats(user1);
-                buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
-                buttonPurchaseItem.style.border = "0.00001vw solid green";
-                buttonPurchaseItem.style.color = "green";
-                updateInventoryDisplay(user)
-                setTimeout(function(){
-                    buttonPurchaseItem.innerHTML = "COMPRAR";
-                    buttonPurchaseItem.style.border = "0.00001vw solid black";
-                    buttonPurchaseItem.style.color = "black";
-                }, 1000);
-
-                if(value.health > 0){
-                    user.health = user.maxHealth;
-                };
-                displayStats(user);
+            for(i = 0; i <= user1Items.length + 1; i++){
+                console.log(i);
+                console.log(user1Items);
+                if(i < user1Items.length && user1Items[i].id == value.id){
+                    if(user1Items[i].storageName == value.storageName){
+                        buttonPurchaseItem.innerHTML = "YA TIENES ESTE ITEM";
+                        buttonPurchaseItem.style.border = "0.00001vw solid red";
+                        buttonPurchaseItem.style.color = "red";
+                        setTimeout(function(){
+                            buttonPurchaseItem.innerHTML = "COMPRAR";
+                            buttonPurchaseItem.style.border = "0.00001vw solid black";
+                            buttonPurchaseItem.style.color = "black";
+                        }, 1000);
+                        break;
+                    }else{
+                        console.log("error");
+                    }
+                }else if(i > user1Items.length){
+                    user.gold = user1.gold - value.price;
+                        user1Items.push(value);
+                        updateStats(user1);
+                        buttonPurchaseItem.innerHTML = "COMPRASTE ESTE ITEM";
+                        buttonPurchaseItem.style.border = "0.00001vw solid green";
+                        buttonPurchaseItem.style.color = "green";
+                        updateStoragedItems(user1Items, "user1Items");
+                        updateInventoryDisplay(user);
+                        
+                        setTimeout(function(){
+                            buttonPurchaseItem.innerHTML = "COMPRAR";
+                            buttonPurchaseItem.style.border = "0.00001vw solid black";
+                            buttonPurchaseItem.style.color = "black";
+                        }, 1000);
+        
+                        if(value.health > 0){
+                            user.health = user.maxHealth;
+                        };
+                        displayStats(user);
+                        i = user1Items.length;
+                        break;
+                }
             }
         }else{
-            buttonPurchaseItem.innerHTML = "NO TIENES SUFICIENTE ORO";
+            buttonPurchaseItem.innerHTML = "NO TIENES SUFICIENTE ORO O YA TIENES ESTE ITEM";
             buttonPurchaseItem.style.border = "0.00001vw solid red";
             buttonPurchaseItem.style.color = "red"
             setTimeout(function(){
                 buttonPurchaseItem.innerHTML = "COMPRAR";
                 buttonPurchaseItem.style.border = "0.00001vw solid black";
-                buttonPurchaseItem.style.color = "black"
+                buttonPurchaseItem.style.color = "black";
             }, 1000);
             console.log("not enough gold");
         }
