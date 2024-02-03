@@ -108,19 +108,21 @@ let enemyInfoContainer = document.getElementById("enemy-info-container");
 
 function enemyAttack(player, enemy, enemyDamageInput) {
     console.log("MIRAR LA CONSOLA MIENTRAS JUGÁS ES DE MALA EDUCACIÓN (No lo hice responsive, capaz se te rompa)");
+    let gameContainer = document.getElementById("game-container")
     let enemyAttackIndicatorBorder = document.createElement("div");
     enemyAttackIndicatorBorder.className = "enemy-attack-border";
     gameContainer.appendChild(enemyAttackIndicatorBorder);
     let enemyAttackIndicatorFill = document.createElement("div");
     enemyAttackIndicatorFill.className = "enemy-attack-border__fill";
     enemyAttackIndicatorBorder.appendChild(enemyAttackIndicatorFill);
-    let randomPositionX = Math.floor(Math.random() * 84);
-    let randomPositionY = Math.floor(Math.random() * 32);
+
+    let randomPositionX = Math.min(Math.floor(Math.random() * 55), gameContainer.clientWidth - enemyAttackIndicatorBorder.clientWidth);
+    let randomPositionY = Math.min(Math.floor(Math.random() * 51, gameContainer.height - enemyAttackIndicatorBorder.clientHeight));
     let indicatorFill = 0;
 
-    enemyAttackIndicatorBorder.style.marginLeft = `${randomPositionX}%`;
+    enemyAttackIndicatorBorder.style.marginLeft = `${randomPositionX}vw`;
     console.log(randomPositionX);
-    enemyAttackIndicatorBorder.style.marginTop = `${randomPositionY}%`;
+    enemyAttackIndicatorBorder.style.marginTop = `${randomPositionY}vh`;
     console.log(randomPositionY);
 
     function clickHandler() {

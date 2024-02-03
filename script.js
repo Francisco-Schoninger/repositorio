@@ -55,7 +55,6 @@ function checkScene(){
 
 checkScene()
 
-
 console.log(`Nombre: ${user1.nickname}\nOro: ${user1.gold}\nVida Máxima: ${user1.maxHealth}\nResistencia: ${user1.resistance}\nDaño: ${user1.damage}`);
 
 function loadTutorial(){

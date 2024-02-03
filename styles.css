@@ -21,8 +21,8 @@
 }
 
 #actions-container button{
-    height: 95%;
-    width: 17.5%;
+    height: 20vh;
+    width: 20vh;
     background-color:#ffffff;
     transition: 0.19s all;
     border: 0.234375vw solid black;
@@ -45,7 +45,7 @@
     background-color:#ffffff;
     text-align: center;
     font-size: 1.6vw;
-    align-content: center;
+    align-content: end;
     justify-content: center;
     padding: 0.1vw;
 }
@@ -78,6 +78,8 @@
 #game-container{
     grid-area:game;
     background-color:#ffffff;
+    height: 100%;
+    width: 100%;
 }
 
 #game-container .game-container__battle-image-container img{
@@ -141,7 +143,7 @@
 
 #actions-container{
     grid-area:actions;
-    background-color:#d8d8d8;
+    background-color:#ffffff;
     border-top: 0.0001vw solid black;
     display: flex;
     align-items: center;
